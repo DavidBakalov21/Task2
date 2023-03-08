@@ -7,8 +7,8 @@ List.Add(new Point(15,5));
 
 var generator = new MapGenerator(new MapGeneratorOptions()
 {
-    Height = 35,
-    Width = 90,
+    Height = 10,
+    Width = 10,
     Noise = 0F
 });
 
@@ -16,44 +16,49 @@ string[,] map = generator.Generate();
 new MapPrinter().Print(map,List);
 
 //Console.WriteLine("------------");
-//PaintBFS(new Point(6, 5));
-GetShortestPath(map,new Point(0,9),new Point(0,10));
-List<Point> GetShortestPath(string[,] map, Point start, Point goal)
+PaintBFS(new Point(6, 5));
+//GetShortestPath(map,new Point(0,9),new Point(0,10));
+void PaintBFS(Point point)
 {
-   var MinimalDist = int.MaxValue;
-    int[,] distances = new int[map.GetLength(0), map.GetLength(1)];
-    Point[,] origins = new Point[map.GetLength(0), map.GetLength(1)];
-    var Q = new HashSet<Point>();
-    // your code here
-    foreach (Point p in convertToPoint(map))
+    var visited = new List<Point>();
+    var queue = new Queue<Point>();
+    Visit(point);
+    queue.Enqueue(point);
+    while (queue.Count > 0)
     {
-        distances[p.Row, p.Column] = 999999999;
-        origins[p.Row, p.Column] = new Point(p.Column, p.Row);
-        Q.Add(p);
+        var next = queue.Dequeue();
+        new MapPrinter().Print(map,List);
+        var neighbours = GetNeighbours(next.Row, next.Column, map);
+        foreach (var neighbour in neighbours)
+        {
+            if (!visited.Contains(neighbour))
+            {
+                Visit(neighbour);
+                queue.Enqueue(neighbour);
+            }
+        }
     }
 
-    distances[0, 9] = 0;
-
-    while (Q.Count>0)
+    void Visit(Point point)
     {
-        Point min = new Point();
-        foreach (Point v in Q)
-        {
-            if (distances[v.Row, v.Column] < MinimalDist)
-            {
-                MinimalDist = distances[v.Row, v.Column];
-                min = new Point(v.Column, v.Row);
-            }
-        }
+        map[point.Row, point.Column] = "1";
+        visited.Add(point);
+    }
+}
 
-        Q.Remove(min);
-        foreach (var P in Q)
-        {
-            if (GetNeighbours(P.Column, P.Row, map, 1, true)!=null)
-            {
-                int alt = distances[min.Column,min.Row] + distances[GetNeighbours(P.Column, P.Row, map, 1, true)];
-            }
-        }
+List<Point> GetShortestPath(string[,] map, Point start, Point goal)
+{
+    HashSet<Point> Points = new HashSet<Point>();
+    foreach (Point value in convertToPoint(map))
+    {
+        Points.Add(new Point(value.Column, value.Row));
+    }
+    var visited = new List<Point>();
+    
+    void Visit(Point point)
+    {
+        map[point.Column, point.Row] = "f";
+        visited.Add(point);
     }
 
     return null;
@@ -67,7 +72,11 @@ List<Point> convertToPoint(string[,] map)
      //   Console.Write($"{row}\t");
         for (var column = 0; column < map.GetLength(0); column++)
         {
-            ToPoint.Add(new Point(column,row));
+            if (map[column, row] != "█")
+            {
+                ToPoint.Add(new Point(column,row));  
+            }
+            
         }
     }
 
