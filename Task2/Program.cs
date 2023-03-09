@@ -37,34 +37,42 @@ new MapPrinter().Print(map, List,FindShortestPath(map, List[0],List[1]));
                     continue;
                 }
 //index of node
-                int node1 = row * numCols + col;
+                Point node1 = new Point(col, row);
                 //index of node
                 if (row > 0 && map[row - 1, col] != "█")
                 {
-                    int node2 = (row - 1) * numCols + col;
-                    graph[node1, node2] = 1;
-                    graph[node2, node1] = 1;
+                    Point node2 = new Point(col, row - 1);
+                    int index1 = node1.Row * numCols + node1.Column;
+                    int index2 = node2.Row * numCols + node2.Column;
+                    graph[index1, index2] = 1;
+                    graph[index2, index1] = 1;
                 }
 
                 if (row < numRows - 1 && map[row + 1, col] != "█")
                 {
-                    int node2 = (row + 1) * numCols + col;
-                    graph[node1, node2] = 1;
-                    graph[node2, node1] = 1;
+                    Point node2 = new Point(col, row + 1);
+                    int index1 = node1.Row * numCols + node1.Column;
+                    int index2 = node2.Row * numCols + node2.Column;
+                    graph[index1, index2] = 1;
+                    graph[index2, index1] = 1;
                 }
 
                 if (col > 0 && map[row, col - 1] != "█")
                 {
-                    int node2 = row * numCols + col - 1;
-                    graph[node1, node2] = 1;
-                    graph[node2, node1] = 1;
+                    Point node2 = new Point(col - 1, row);
+                    int index1 = node1.Row * numCols + node1.Column;
+                    int index2 = node2.Row * numCols + node2.Column;
+                    graph[index1, index2] = 1;
+                    graph[index2, index1] = 1;
                 }
 
                 if (col < numCols - 1 && map[row, col + 1] != "█")
                 {
-                    int node2 = row * numCols + col + 1;
-                    graph[node1, node2] = 1;
-                    graph[node2, node1] = 1;
+                    Point node2 = new Point(col + 1, row);
+                    int index1 = node1.Row * numCols + node1.Column;
+                    int index2 = node2.Row * numCols + node2.Column;
+                    graph[index1, index2] = 1;
+                    graph[index2, index1] = 1;
                 }
             }
         }
@@ -78,7 +86,7 @@ new MapPrinter().Print(map, List,FindShortestPath(map, List[0],List[1]));
 
         for (int i = 0; i < numRows * numCols; i++)
         {
-            distances[i] = int.MaxValue;
+            distances[i] = 999999999;
             visited[i] = false;
             previous[i] = -1;
         }
@@ -92,7 +100,7 @@ new MapPrinter().Print(map, List,FindShortestPath(map, List[0],List[1]));
 
             for (int j = 0; j < numRows * numCols; j++)
             {
-                if (!visited[j] && graph[current, j] != int.MaxValue && distances[current] + graph[current, j] < distances[j])
+                if (!visited[j] && graph[current, j] != 999999999 && distances[current] + graph[current, j] < distances[j])
                 {
                     distances[j] = distances[current] + graph[current, j];
                     previous[j] = current;
