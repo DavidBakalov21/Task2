@@ -23,6 +23,9 @@
 
         public string[,] Generate()
         {
+            
+            
+            
             maze = new string[options.Width, options.Height];
             if (options.Type == MapType.Maze)
             {

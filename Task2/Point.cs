@@ -6,7 +6,7 @@ namespace Kse.Algorithms.Samples
         public int Column;
         public int Row;
 
-        public Point(int column, int row)
+        public Point( int row,int column)
         {
             Column = column;
             Row = row;

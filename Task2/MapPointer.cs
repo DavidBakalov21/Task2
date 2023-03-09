@@ -12,18 +12,23 @@
             {
                 Console.Write($"{row}\t");
                 for (var column = 0; column < maze.GetLength(0); column++)
-                {  if (column==path[0].Column && row==path[0].Row)
+                {
+                    if (column == path[0].Column && row == path[0].Row)
                     {
                         Console.Write("A");
-                    }else if (column==path[1].Column && row==path[1].Row)
+                    }
+                    else if (column == path[1].Column && row == path[1].Row)
                     {
                         Console.Write("B");
                     }
-                    else if (path2.Contains(new Point(column,row)))
+                    else if (path2.Contains(new Point(column, row)))
                     {
                         Console.Write(".");
                     }
-                    Console.Write(maze[column, row]);
+                    else
+                    {
+                        Console.Write(maze[column, row]);
+                    }
                 }
 
                 Console.WriteLine();
