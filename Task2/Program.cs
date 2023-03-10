@@ -6,7 +6,10 @@ var generator = new MapGenerator(new MapGeneratorOptions()
 {
     Height = 35,
     Width = 90,
-    Seed = 1
+    Seed = 1,
+    Noise = .1f,
+    AddTraffic = true,
+    TrafficSeed = 1234
 });
 
 string[,] map = generator.Generate();
@@ -29,7 +32,9 @@ List<Point> FindShortestPath(string[,] map, Point start, Point end)
             {
                 if (!previous.ContainsKey(VAR))
                 {
-                    distances[VAR] = distances[state]+1;
+                    var Pif = Math.Pow(state.Column - end.Column, 2) + Math.Pow(state.Row - end.Row, 2);
+                   var distance = Math.Sqrt(Pif);
+                    distances[VAR] = distances[state]+1+(long)distance;
                     previous[VAR] = state;
                 }
             }
