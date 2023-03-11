@@ -11,14 +11,23 @@ var generator = new MapGenerator(new MapGeneratorOptions()
     AddTraffic = true,
     TrafficSeed = 1234
 });
-
+var generator2 = new MapGenerator(new MapGeneratorOptions()
+{
+    Height = 35,
+    Width = 90,
+    Seed = 3,
+    Noise = .1f,
+    AddTraffic = true,
+    TrafficSeed = 1234
+});
 string[,] map = generator.Generate();
+string[,] map2 = generator2.Generate();
 //map[List[0].Column, List[0].Row] = " ";
 //map[List[1].Column, List[1].Row] = " ";
 new MapPrinter().Print(map, List,FindShortestPath(map, List[0],List[1]));
 Console.WriteLine("---------");
 
-new MapPrinter().Print(map, List,FindDijkstra(map, List[0],List[1]));
+new MapPrinter().Print(map2, List,FindDijkstra(map2, List[0],List[1]));
 List<Point> FindShortestPath(string[,] map, Point start, Point end)
     {
         var state = start;
